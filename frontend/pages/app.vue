@@ -14,7 +14,9 @@ function signOut() {
 </script>
 
 <template>
-    I am an "App"
-
-    <button @click="signOut()">Sign Out</button>
+    <div>
+        I am an "App" <button @click="signOut()">Sign Out</button>
+        <br/>
+        <NuxtPage/>
+    </div>
 </template>

@@ -4,7 +4,7 @@ const supabase = useSupabaseClient()
 
 const signInWithOAuth = async () => {
     const { error } = await supabase.auth.signInWithPassword({
-        email: 'admin@test.com',
+        email: 'random@test.com',
         password: 'password',
     })
     if (error) console.log(error)
