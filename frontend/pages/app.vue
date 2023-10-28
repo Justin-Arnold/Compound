@@ -14,7 +14,7 @@ function signOut() {
 </script>
 
 <template>
-    <div class="h-screen flex flex-col bg-slate-800 text-white">
+    <div class="h-screen flex flex-col bg-slate-800 text-white pt-12">
         <div class="bg-slate-200 w-full flex justify-between items-center p-2 text-black">
             Compound
             <div class="flex gap-2">

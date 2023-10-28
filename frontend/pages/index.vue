@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen bg-slate-800 text-white">
+    <div class="h-screen bg-slate-800 text-white pt-12">
         <div class="bg-slate-200 w-full flex justify-between items-center p-2 text-black">
             Compound
             <NuxtLink to="/app" class="p-2 bg-slate-400 rounded">Go To App</NuxtLink>
