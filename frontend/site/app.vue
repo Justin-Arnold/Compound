@@ -1,14 +1,21 @@
 <template>
-    <div class="h-screen bg-slate-800 text-white">
-        <BaseHeader>
-            <template #right>
-                <NuxtLink :to="useRuntimeConfig().public.appUrl" class="p-2 bg-slate-400 rounded">Go To App</NuxtLink>
-            </template>
-        </BaseHeader>
-        <div class="grid place-items-center text-lg font-bold h-full p-2">
-            <div class="flex flex-col gap-8 items-center">
-                <span class="text-[100px]">👷</span>
-                <p>Do not forget to wear hardhats while the site is under construction. </p>
+    <div class="h-screen bg-slate-800 text-white relative">
+        <img
+            src="/background.webp"
+            class="h-full w-full object-cover absolute top-0 left-0 blur-sm"
+        />
+        <div class="h-full w-full absolute top-0 left-0 ">
+            <BaseHeader>
+                <template #right>
+                    <NuxtLink :to="useRuntimeConfig().public.appUrl" class="p-2 bg-slate-200 rounded text-slate-900">Go To App</NuxtLink>
+                </template>
+            </BaseHeader>
+            <div class="grid place-items-center text-lg h-full p-2">
+                <div class="flex flex-col items-start gap-2 text-white leading-[64px]">
+                    <p class="text-[52px]">Evolve with</p>
+                    <h1 class="text-[100px] font-semibold">Compound</h1>
+                    <p class="text-xl text-white/50 w-full text-right pt-8">Under Construction</p>
+                </div>
             </div>
         </div>
     </div>
