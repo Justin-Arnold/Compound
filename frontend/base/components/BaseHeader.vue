@@ -1,8 +1,8 @@
 <template>
-    <div class="bg-slate-100/50 h-12 p-2 flex justify-between items-center">
-        <div class="text-black/70 text-xl text-bold font-mono tracking-wider">
+    <div class="bg-slate-800 h-16 p-4 flex justify-between items-center">
+        <NuxtLink class="text-white text-xl font-bold font-mono tracking-widest" :to="useRuntimeConfig().public.siteURL">
             [CmPd]
-        </div>
+        </NuxtLink>
         <div>
             <slot name="right"></slot>
         </div>

@@ -22,5 +22,11 @@ export default defineNuxtConfig({
     },
     css: [
         join(currentDir, './assets/css/tailwind.css')
-    ]
+    ],
+    runtimeConfig: {
+        public: {
+            appUrl: process.env.APP_URL,
+            siteURL: process.env.SITE_URL,
+        }
+    }
 })

@@ -23,6 +23,9 @@ function signOut() {
                 </div>
             </template>
         </BaseHeader>
-        Welcome to the app
+        <!-- Hero Section -->
+        <div class="overflow-clip">
+            <div class="h-[400px] bg-gradient-to-br from-purple-900 to-blue-800 blur-4xl from-40% w-full"></div>
+        </div>
     </div>
 </template>

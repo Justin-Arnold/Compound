@@ -2,10 +2,5 @@
 export default defineNuxtConfig({
     extends: [
         '../base'
-    ],
-    runtimeConfig: {
-        public: {
-            appUrl: process.env.APP_URL
-        }
-    }
+    ]
 })
