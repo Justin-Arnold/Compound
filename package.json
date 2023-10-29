@@ -1,0 +1,16 @@
+{
+    "name": "compound_monorepo",
+    "version": "0.0.1",
+    "private": true,
+    "workspaces": [
+        "frontend/*"
+    ],
+    "scripts": {
+        "start:frontend:app": "cd frontend/app && bun run dev",
+        "start:frontend:site": "cd frontend/site && bun run dev",
+        "start:frontend": "concurrently \"bun run start:frontend:app\" \"bun run start:frontend:site\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
