@@ -3,3 +3,18 @@
     <NuxtPage />
   </div>
 </template>
+
+<style>
+@font-face {
+    font-family: 'Mona Sans';
+    src:
+        url('~/assets/fonts/Mona-Sans.woff2') format('woff2 supports variations'),
+        url('~/assets/fonts/Mona-Sans.woff2') format('woff2-variations');
+    font-weight: 200 900;
+    font-stretch: 75% 125%;
+}
+
+html {
+    font-family: 'Mona Sans';
+}
+</style>
