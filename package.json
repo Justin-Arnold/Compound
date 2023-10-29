@@ -3,12 +3,14 @@
     "version": "0.0.1",
     "private": true,
     "workspaces": [
+        "backend/*",
         "frontend/*"
     ],
     "scripts": {
         "start:frontend:app": "cd frontend/app && bun run dev",
         "start:frontend:site": "cd frontend/site && bun run dev",
-        "start:frontend": "concurrently \"bun run start:frontend:app\" \"bun run start:frontend:site\""
+        "start:frontend": "concurrently \"bun run start:frontend:app\" \"bun run start:frontend:site\"",
+        "status:backend:database": "cd backend/database && npx supabase status"
     },
     "devDependencies": {
         "concurrently": "^8.2.2"

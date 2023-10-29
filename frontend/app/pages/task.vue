@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
+import { type Database } from 'database'
 definePageMeta({
      middleware: 'auth'
 })
-const supabase = useSupabaseClient()
+const supabase = useSupabaseClient<Database>()
 
 function signOut() {
     supabase.auth.signOut()
