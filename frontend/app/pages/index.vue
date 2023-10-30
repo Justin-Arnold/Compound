@@ -44,13 +44,13 @@ async function newPoint() {
         <BaseHeader>
             <template #right>
                 <div class="flex gap-2">
-                    <button @click="signOut()" class="p-2 bg-slate-400 rounded">Sign Out</button>
+                    <prime-button @click="signOut()">Sign Out</prime-button>
                 </div>
             </template>
         </BaseHeader>
         <!-- Hero Section -->
         <div class="overflow-clip">
-            <div class="h-[1200px] bg-gradient-to-br from-[#06162b] to-[#2f879a] blur-4xl from-10% w-full"></div>
+            <div class="h-[1200px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
         </div>
         <div class="grid h-full grid-cols-3 p-4 gap-4">
             <div class="bg-slate-700/50 rounded-lg aspect-square p-4 flex flex-col gap-4">
@@ -59,6 +59,7 @@ async function newPoint() {
                     <div v-for="point, index in state.todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2">
                         <p>{{ point.name }}</p>
                     </div>
+                    <button class=" text-slate-400 mt-8" @click="newPoint()">Create Point</button>
                 </div>
                 <div v-else class="grid h-1/2 place-items-center">
                     <div class="flex flex-col items-center gap-4">

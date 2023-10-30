@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import Tailwind from 'primevue/passthrough/tailwind';
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -7,10 +8,21 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
     modules: [
         '@nuxtjs/supabase',
-        '@nuxtjs/tailwindcss'
+        '@nuxtjs/tailwindcss',
+        'nuxt-primevue'
     ],
     supabase: {
         redirect: false,
+    },
+    primevue: {
+        usePrimeVue: true,
+        components: {
+            prefix: 'Prime',
+            include: ['Button', 'DataTable']
+        },
+    },
+    tailwindcss: {
+        cssPath: join(currentDir, './assets/css/tailwind.css'),
     },
     app: {
         head: {
@@ -20,9 +32,7 @@ export default defineNuxtConfig({
             }]
         }
     },
-    css: [
-        join(currentDir, './assets/css/tailwind.css')
-    ],
+    css: ['primevue/resources/themes/viva-dark/theme.css'],
     runtimeConfig: {
         public: {
             appUrl: process.env.APP_URL,
