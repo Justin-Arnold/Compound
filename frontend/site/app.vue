@@ -7,7 +7,9 @@
         <div class="h-full w-full absolute top-0 left-0 ">
             <BaseHeader>
                 <template #right>
-                    <NuxtLink :to="useRuntimeConfig().public.appUrl" class="p-2 bg-slate-200 rounded text-slate-900">Go To App</NuxtLink>
+                    <NuxtLink :to="useRuntimeConfig().public.appUrl">
+                        <prime-button>Go To App</prime-button>
+                    </NuxtLink>
                 </template>
             </BaseHeader>
             <div class="grid place-items-center text-lg h-full p-2">
