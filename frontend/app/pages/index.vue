@@ -10,7 +10,7 @@ const user = useSupabaseUser()
 
 const { data: points, error } = await supabase
     .from('points')
-    .select('name')
+    .select()
 
 const state = reactive<{
     todaysPoints: any[]
@@ -80,7 +80,7 @@ async function createPoint() {
                 <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
                 <div v-if="state.todaysPoints.length > 0" class="flex flex-col gap-2">
                     <div v-for="point, index in state.todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex justify-between items-center group">
-                        <p>{{ point.name }}</p>
+                        <p @click="navigateTo(`/point-${point.id}`)">{{ point.name }}</p>
                         <div class="bg-slate-200/20 rounded-full aspect-square p-2 place-items-center text-white hidden group-hover:grid">
                             <div class="h-2 w-2 bg-slate-300 rounded-full"></div>
                         </div>

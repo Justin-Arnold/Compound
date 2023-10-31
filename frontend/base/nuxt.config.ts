@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         usePrimeVue: true,
         components: {
             prefix: 'Prime',
-            include: ['Button', 'DataTable']
+            include: ['Button', 'DataTable', 'Chart']
         },
     },
     tailwindcss: {

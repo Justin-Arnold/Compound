@@ -9,39 +9,33 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      _prisma_migrations: {
+      events: {
         Row: {
-          applied_steps_count: number
-          checksum: string
-          finished_at: string | null
+          created_at: string | null
+          date: string | null
           id: string
-          logs: string | null
-          migration_name: string
-          rolled_back_at: string | null
-          started_at: string
+          point_id: string | null
+          user_id: string | null
+          value: number | null
         }
         Insert: {
-          applied_steps_count?: number
-          checksum: string
-          finished_at?: string | null
-          id: string
-          logs?: string | null
-          migration_name: string
-          rolled_back_at?: string | null
-          started_at?: string
+          created_at?: string | null
+          date?: string | null
+          id?: string
+          point_id?: string | null
+          user_id?: string | null
+          value?: number | null
         }
         Update: {
-          applied_steps_count?: number
-          checksum?: string
-          finished_at?: string | null
+          created_at?: string | null
+          date?: string | null
           id?: string
-          logs?: string | null
-          migration_name?: string
-          rolled_back_at?: string | null
-          started_at?: string
+          point_id?: string | null
+          user_id?: string | null
+          value?: number | null
         }
       }
-      habits: {
+      points: {
         Row: {
           completed_at: string | null
           created_at: string | null
