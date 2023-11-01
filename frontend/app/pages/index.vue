@@ -51,7 +51,7 @@ const type = ref<string>('')
 const frequency = ref<string>('')
 
 async function createPoint() {
-    const { data, error } = await supabase.from('points_config').insert({
+    const { data, error } = await supabase.from('point_config').insert({
         name: name.value,
         type: type.value,
         frequency: frequency.value,
@@ -68,7 +68,22 @@ async function createPoint() {
 async function increaseValue(point) {
     const pointId = point.id;
 
-    const { data, error } = await supabase.from('point_event').insert({
+    //if it exists, update it and if not creaet it
+    const { data: existingEvent } = await supabase.from('point_event').select().eq('point_id', pointId).eq('recorded_at', toLocalISOString(new Date()));
+
+    if (!!existingEvent && existingEvent.length > 0) {
+        const { data, error } = await supabase.from('point_event').update({
+            value: existingEvent[0].value + 1
+        }).eq('point_id', existingEvent[0].point_id);
+
+        if (error) {
+            console.error('Error incrementing tally:', error);
+        } else {
+            console.log('Tally incremented successfully!', data);
+        }
+        return;
+    } else {
+        const { data, error } = await supabase.from('point_event').insert({
         point_id: pointId,
         recorded_at: new Date().toISOString(),
         value: 1
@@ -78,6 +93,7 @@ async function increaseValue(point) {
         console.error('Error incrementing tally:', error);
     } else {
         console.log('Tally incremented successfully!', data);
+    }
     }
 }
 
@@ -129,7 +145,6 @@ function toLocalISOString(date: Date) {
                 </div>
             </div>
         </div>
-        {{ todaysPoints [0] }}
         <dialog id="dia" ref="newPointDialog">
             <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
                 <h2 class="text-2xl font-semibold text-purple-100">New Point</h2>
@@ -151,7 +166,7 @@ function toLocalISOString(date: Date) {
                         <option value="daily">Per Day</option>
                         <option value="weekly">Per Week</option>
                         <option value="monthly">Per Month</option>
-                         <option value="yearly">Per Year</option>
+                        <option value="yearly">Per Year</option>
                     </select>
                 </div>
                 <div class="flex gap-2">
