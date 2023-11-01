@@ -9,14 +9,33 @@ const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
 const { data: points, error } = await supabase
-    .from('points')
+    .from('points_config')
     .select()
+
+const { data: aggregatedValues, error: error2 } = await supabase
+    .from('aggregated_tally_values')
+    .select('*');
 
 const state = reactive<{
     todaysPoints: any[]
 }>({
     todaysPoints: points || []
 })
+
+const PointsWithAggregatedData = computed(() => {
+    if (!points || !aggregatedValues) return [];
+
+    return points.map((point) => {
+        const aggregatedValue = aggregatedValues.find((aggregatedValue) => {
+            return aggregatedValue.point_config_id === point.id;
+        });
+
+        return {
+            ...point,
+            aggregatedValue: aggregatedValue?.total_tally || 0,
+        };
+    });
+});
 
 
 
@@ -47,7 +66,7 @@ const type = ref<string>('')
 const frequency = ref<string>('')
 
 async function createPoint() {
-    const { data, error } = await supabase.from('points').insert({
+    const { data, error } = await supabase.from('points_config').insert({
         name: name.value,
         type: type.value,
         frequency: frequency.value,
@@ -59,6 +78,34 @@ async function createPoint() {
         newPointDialog.value?.close()
         state.todaysPoints.push(data)
     }
+}
+
+async function increaseValue(point: Database["public"]["Tables"]["points_config"]["Row"]) {
+    const pointId = point.id;
+
+    const { data, error } = await supabase.from('points_data').insert({
+        point_id: pointId,
+        type: point.type,
+        tally_value: 1
+    });
+
+    if (error) {
+        console.error('Error incrementing tally:', error);
+    } else {
+        console.log('Tally incremented successfully!', data);
+    }
+}
+
+async function getPointValue(point: Database["public"]["Tables"]["points_config"]["Row"]) {
+    const pointId = point.id;
+    const desiredFrequency = point.frequency;
+
+    const { data, error } = await supabase.from('aggregated_tally_values')
+        .select('*')
+        .eq('point_config_id', pointId)
+    ;
+
+    return data ? data[0].total_tally : 0;
 }
 </script>
 
@@ -79,10 +126,11 @@ async function createPoint() {
             <div class="bg-slate-700/50 rounded-lg aspect-square p-4 flex flex-col gap-4">
                 <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
                 <div v-if="state.todaysPoints.length > 0" class="flex flex-col gap-2">
-                    <div v-for="point, index in state.todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex justify-between items-center group">
+                    <div v-for="point, index in PointsWithAggregatedData" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center group">
                         <p @click="navigateTo(`/point-${point.id}`)">{{ point.name }}</p>
-                        <div class="bg-slate-200/20 rounded-full aspect-square p-2 place-items-center text-white hidden group-hover:grid">
-                            <div class="h-2 w-2 bg-slate-300 rounded-full"></div>
+                        <div class="flex grow justify-center items-center">
+                            <p>{{ point.aggregatedValue }}</p>
+                            <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
                         </div>
                     </div>
                     <button class=" text-slate-400 mt-8" @click="newPoint()">Create Point</button>
@@ -105,17 +153,18 @@ async function createPoint() {
                 <div class="flex flex-col gap-2">
                     <label class="text-slate-100">Type</label>
                     <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="type">
-                        <option value="Binary">Binary</option>
-                        <option value="Tally">Tally</option>
+                        <option value="binary">Binary</option>
+                        <option value="tally">Tally</option>
+                        <option value="numeric">Number</option>
                     </select>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="text-slate-100">Frequency</label>
                     <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="frequency">
-                        <option value="day">Per Day</option>
-                        <option value="week">Per Week</option>
-                        <option value="month">Per Month</option>
-                         <option value="year">Per Year</option>
+                        <option value="daily">Per Day</option>
+                        <option value="weekly">Per Week</option>
+                        <option value="monthly">Per Month</option>
+                         <option value="yearly">Per Year</option>
                     </select>
                 </div>
                 <div class="flex gap-2">

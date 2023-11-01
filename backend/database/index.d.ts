@@ -9,67 +9,92 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      events: {
+      points_config: {
         Row: {
-          created_at: string | null
-          date: string | null
+          archived: boolean
+          color: string | null
+          created_at: string
+          description: string | null
+          frequency: string
+          goal_value: number | null
+          icon: string | null
           id: string
-          point_id: string | null
-          user_id: string | null
-          value: number | null
+          name: string
+          reminder: string | null
+          tags: string[] | null
+          type: string
+          user_id: string
         }
         Insert: {
-          created_at?: string | null
-          date?: string | null
+          archived?: boolean
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          frequency?: string
+          goal_value?: number | null
+          icon?: string | null
           id?: string
-          point_id?: string | null
-          user_id?: string | null
-          value?: number | null
+          name?: string
+          reminder?: string | null
+          tags?: string[] | null
+          type: string
+          user_id: string
         }
         Update: {
-          created_at?: string | null
-          date?: string | null
+          archived?: boolean
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          frequency?: string
+          goal_value?: number | null
+          icon?: string | null
           id?: string
-          point_id?: string | null
-          user_id?: string | null
-          value?: number | null
+          name?: string
+          reminder?: string | null
+          tags?: string[] | null
+          type?: string
+          user_id?: string
         }
       }
-      points: {
+      points_data: {
         Row: {
-          completed_at: string | null
-          created_at: string | null
-          description: string | null
-          frequency: string | null
+          binary_value: boolean | null
           id: string
-          name: string | null
-          type: string | null
-          user_id: string
+          numeric_value: number | null
+          point_id: string
+          recorded_at: string
+          tally_value: number | null
+          type: string
         }
         Insert: {
-          completed_at?: string | null
-          created_at?: string | null
-          description?: string | null
-          frequency?: string | null
+          binary_value?: boolean | null
           id?: string
-          name?: string | null
-          type?: string | null
-          user_id: string
+          numeric_value?: number | null
+          point_id: string
+          recorded_at?: string
+          tally_value?: number | null
+          type: string
         }
         Update: {
-          completed_at?: string | null
-          created_at?: string | null
-          description?: string | null
-          frequency?: string | null
+          binary_value?: boolean | null
           id?: string
-          name?: string | null
-          type?: string | null
-          user_id?: string
+          numeric_value?: number | null
+          point_id?: string
+          recorded_at?: string
+          tally_value?: number | null
+          type?: string
         }
       }
     }
     Views: {
-      [_ in never]: never
+      aggregated_tally_values: {
+        Row: {
+          frequency: string | null
+          name: string | null
+          point_config_id: string | null
+          total_tally: number | null
+        }
+      }
     }
     Functions: {
       [_ in never]: never

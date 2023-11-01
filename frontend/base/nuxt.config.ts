@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     modules: [
         '@nuxtjs/supabase',
         '@nuxtjs/tailwindcss',
-        'nuxt-primevue'
+        'nuxt-primevue',
+        'nuxt-icon'
     ],
     supabase: {
         redirect: false,

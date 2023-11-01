@@ -11,9 +11,10 @@ const route = useRoute()
 const pointId = route.params.pointId as string
 
 const { data: events, error } = await supabase
-    .from('events')
+    .from('points_data')
     .select()
     .eq('point_id', pointId)
+    .order('recorded_at', { ascending: true })
 
 function getChartDataFromEvents() {
 
@@ -32,11 +33,25 @@ function getChartDataFromEvents() {
     if (!events) return {}
 
     events.forEach((event) => {
-        data.labels.push(event.created_at || '')
-        data.datasets[0].data.push(event.value || 0)
+        console.log('e', event)
+        if (!data.labels.includes(formatDateToMMDD(event.recorded_at || ''))) {
+            data.labels.push(formatDateToMMDD(event.recorded_at || ''))
+            data.datasets[0].data.push(event.tally_value || 0)
+        } else {
+            const index = data.labels.indexOf(formatDateToMMDD(event.recorded_at || ''))
+            data.datasets[0].data[index] += event.tally_value || 0
+        }
     })
 
     return data
+}
+
+function formatDateToMMDD(dateTimeStr: string) {
+    const date = new Date(dateTimeStr);
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // months are 0-based in JS
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${month}-${day}`;
 }
 
 function signOut() {
@@ -73,7 +88,7 @@ const setChartOptions = () => {
             },
             y: {
                 ticks: {
-                    color: textColorSecondary
+                    color: textColorSecondary,
                 },
                 grid: {
                     color: surfaceBorder
@@ -102,9 +117,7 @@ const setChartOptions = () => {
         </div>
         <div class="grid h-full grid-cols-3 p-4 gap-4">
             Hello
-        {{ events }}
         <hr/>
-        {{ getChartDataFromEvents() }}
         </div>
 
     </div>
