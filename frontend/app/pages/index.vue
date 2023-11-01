@@ -8,34 +8,19 @@ definePageMeta({
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
-const { data: points, error } = await supabase
-    .from('points_config')
-    .select()
+const { data: allPoints, error } = await supabase
+    .from('point_config')
+    .select('*, point_event(recorded_at, value)')
 
-const { data: aggregatedValues, error: error2 } = await supabase
-    .from('aggregated_tally_values')
-    .select('*');
 
-const state = reactive<{
-    todaysPoints: any[]
-}>({
-    todaysPoints: points || []
+const todaysPoints = computed(() => {
+    if (!allPoints) return []
+    return allPoints.filter((point) => {
+        return point.frequency === 'daily'
+    })
 })
 
-const PointsWithAggregatedData = computed(() => {
-    if (!points || !aggregatedValues) return [];
 
-    return points.map((point) => {
-        const aggregatedValue = aggregatedValues.find((aggregatedValue) => {
-            return aggregatedValue.point_config_id === point.id;
-        });
-
-        return {
-            ...point,
-            aggregatedValue: aggregatedValue?.total_tally || 0,
-        };
-    });
-});
 
 
 
@@ -80,13 +65,13 @@ async function createPoint() {
     }
 }
 
-async function increaseValue(point: Database["public"]["Tables"]["points_config"]["Row"]) {
+async function increaseValue(point) {
     const pointId = point.id;
 
-    const { data, error } = await supabase.from('points_data').insert({
+    const { data, error } = await supabase.from('point_event').insert({
         point_id: pointId,
-        type: point.type,
-        tally_value: 1
+        recorded_at: new Date().toISOString(),
+        value: 1
     });
 
     if (error) {
@@ -96,16 +81,10 @@ async function increaseValue(point: Database["public"]["Tables"]["points_config"
     }
 }
 
-async function getPointValue(point: Database["public"]["Tables"]["points_config"]["Row"]) {
-    const pointId = point.id;
-    const desiredFrequency = point.frequency;
-
-    const { data, error } = await supabase.from('aggregated_tally_values')
-        .select('*')
-        .eq('point_config_id', pointId)
-    ;
-
-    return data ? data[0].total_tally : 0;
+function toLocalISOString(date: Date) {
+  const offset = date.getTimezoneOffset();
+  const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
+  return adjustedDate.toISOString().split('T')[0];
 }
 </script>
 
@@ -125,11 +104,18 @@ async function getPointValue(point: Database["public"]["Tables"]["points_config"
         <div class="grid h-full grid-cols-3 p-4 gap-4">
             <div class="bg-slate-700/50 rounded-lg aspect-square p-4 flex flex-col gap-4">
                 <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
-                <div v-if="state.todaysPoints.length > 0" class="flex flex-col gap-2">
-                    <div v-for="point, index in PointsWithAggregatedData" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center group">
+                <div v-if="todaysPoints.length > 0" class="flex flex-col gap-2">
+                    <div v-for="point, index in todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center group">
                         <p @click="navigateTo(`/point-${point.id}`)">{{ point.name }}</p>
                         <div class="flex grow justify-center items-center">
-                            <p>{{ point.aggregatedValue }}</p>
+                            <p>
+                                {{ point.point_event.find((event) => {
+                                        return event.recorded_at === toLocalISOString(new Date())
+                                    })
+                                    ?.value || 0
+                                }}
+                            </p>
+
                             <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
                         </div>
                     </div>
@@ -143,6 +129,7 @@ async function getPointValue(point: Database["public"]["Tables"]["points_config"
                 </div>
             </div>
         </div>
+        {{ todaysPoints [0] }}
         <dialog id="dia" ref="newPointDialog">
             <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
                 <h2 class="text-2xl font-semibold text-purple-100">New Point</h2>
