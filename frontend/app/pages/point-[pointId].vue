@@ -72,35 +72,40 @@ function signOut() {
     })
 }
 
-const chartOptions = {
-    maintainAspectRatio: false,
-    aspectRatio: 0.6,
-    plugins: {
-        legend: {
-            labels: {
-                color: 'white'
-            }
-        }
-    },
-    scales: {
-        x: {
-            ticks: {
-                color: 'white'
-            },
-            grid: {
-                color: 'lightgray'
+const shouldBeginAtZero = ref(false)
+
+const chartOptions = computed(() => {
+    return {
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
             }
         },
-        y: {
-            ticks: {
-                color: 'white',
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                },
+                grid: {
+                    color: 'lightgray'
+                }
             },
-            grid: {
-                color: 'lightgray'
+            y: {
+                beginAtZero: shouldBeginAtZero.value,
+                ticks: {
+                    color: 'white',
+                },
+                grid: {
+                    color: 'lightgray'
+                }
             }
         }
     }
-};
+})
 </script>
 
 <template>
@@ -121,8 +126,11 @@ const chartOptions = {
         </div>
         <div class="grid h-full grid-cols-3 p-4 gap-4">
             Hello
-        <hr/>
+            <hr/>
+
+            <input type="checkbox" v-model="shouldBeginAtZero" class="h-4" />
         </div>
+        {{  chartOptions.scales.y }}
 
     </div>
 </template>

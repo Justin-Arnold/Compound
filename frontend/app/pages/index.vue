@@ -74,7 +74,8 @@ async function increaseValue(point) {
     if (!!existingEvent && existingEvent.length > 0) {
         const { data, error } = await supabase.from('point_event').update({
             value: existingEvent[0].value + 1
-        }).eq('point_id', existingEvent[0].point_id);
+        }).eq('point_id', existingEvent[0].point_id)
+        .eq('recorded_at', existingEvent[0].recorded_at);
 
         if (error) {
             console.error('Error incrementing tally:', error);
