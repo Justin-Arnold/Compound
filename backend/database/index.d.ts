@@ -76,7 +76,44 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      view_points_with_latest_event: {
+        Row: {
+          created_at: string | null
+          frequency: string | null
+          id: string | null
+          latest_recorded_at: string | null
+          latest_value: number | null
+          name: string | null
+          type: string | null
+          user_id: string | null
+        }
+      }
+      view_points_without_recent_events: {
+        Row: {
+          created_at: string | null
+          frequency: string | null
+          id: string | null
+          name: string | null
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          frequency?: string | null
+          id?: string | null
+          name?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          frequency?: string | null
+          id?: string | null
+          name?: string | null
+          type?: string | null
+          user_id?: string | null
+        }
+      }
     }
     Functions: {
       [_ in never]: never

@@ -9,16 +9,16 @@ const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
 const { data: allPoints, error } = await supabase
-    .from('point_config')
-    .select('*, point_event(recorded_at, value)')
+    .from('view_points_with_latest_event')
+    .select('*')
 
 
-const todaysPoints = computed(() => {
-    if (!allPoints) return []
-    return allPoints.filter((point) => {
-        return point.frequency === 'daily'
-    })
-})
+// const todaysPoints = computed(() => {
+//     if (!allPoints) return []
+//     return allPoints.filter((point) => {
+//         return point.frequency === 'daily'
+//     })
+// })
 
 
 
@@ -119,16 +119,13 @@ function toLocalISOString(date: Date) {
         <div class="grid h-full grid-cols-3 p-4 gap-4">
             <div class="bg-slate-700/50 rounded-lg aspect-square p-4 flex flex-col gap-4">
                 <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
-                <div v-if="todaysPoints.length > 0" class="flex flex-col gap-2">
-                    <div v-for="point, index in todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center group">
+                <div v-if="allPoints?.length! > 0" class="flex flex-col gap-2">
+                    <div v-for="point, index in allPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center group">
                         <p @click="navigateTo(`/point-${point.id}`)">{{ point.name }}</p>
                         <div class="flex grow justify-center items-center">
                             <p>
-                                {{ point.point_event.find((event) => {
-                                        return event.recorded_at === toLocalISOString(new Date())
-                                    })
-                                    ?.value || 0
-                                }}
+                                {{ point.latest_value || 0 }}
+
                             </p>
 
                             <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
