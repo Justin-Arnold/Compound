@@ -52,7 +52,105 @@ async function createPoint() {
     }
 }
 
+const chartOptions = computed(() => {
+    return {
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                },
+                grid: {
+                    color: 'lightgray'
+                }
+            },
+            y: {
+                beginAtZero: false,
+                ticks: {
+                    color: 'white',
+                },
+                grid: {
+                    color: 'lightgray'
+                }
+            }
+        }
+    }
+})
 
+type ChartDataset = {
+    label: string;
+    data: number[];
+    fill: boolean;
+    borderColor: string;
+    tension: number;
+    backgroundColor: string;
+};
+
+
+
+
+const points = usePoints();
+
+const { data: todaysPoints, refresh, error } = await useAsyncData(points.getTodaysPoints)
+
+const { data: chartDataForTodayPointEvents, refresh: refreshChartData, error: chartDataError } = await useAsyncData(async () => {
+
+    const chartData: {
+        labels: string[];
+        datasets: ChartDataset[];
+    } = {
+        labels: [],
+        datasets: []
+    };
+
+    if (todaysPoints.value){
+        for ( const point of todaysPoints.value) {
+            const hexColor = `#${Math.floor(Math.random()*16777215).toString(16)}`
+            chartData.datasets.push({
+                label: point.name || 'error',
+                data: [],
+                fill: true,
+                borderColor: hexColor,
+                tension: 0.4,
+                backgroundColor: `${hexColor}50`
+            })
+
+            const { data: events } = await supabase
+                .from('point_event')
+                .select()
+                .eq('point_id', point.id || '')
+                .order('recorded_at', { ascending: true })
+
+            if (events){
+                events.forEach((event) => {
+                    if (!chartData.labels.includes(formatDateToMMDD(event.recorded_at || ''))) {
+                        chartData.labels.push(formatDateToMMDD(event.recorded_at || ''))
+                    }
+                    chartData.datasets.find((dataset) => dataset.label === point.name)?.data.push(event.value || 0)
+                })
+            }
+        }
+    }
+
+    return chartData
+})
+
+
+function formatDateToMMDD(dateTimeStr: string) {
+    const date = new Date(dateTimeStr);
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // months are 0-based in JS
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${month}-${day}`;
+}
 
 function toLocalISOString(date: Date) {
   return date.toISOString().split('T')[0];
@@ -69,7 +167,13 @@ function toLocalISOString(date: Date) {
             </template>
         </BaseHeader>
         <!-- Hero Section -->
-        <PointChart />
+        <div class="overflow-clip relative">
+            <div class="h-[1200px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
+            <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
+                <PrimeChart v-if="chartDataForTodayPointEvents?.labels.length" type="line" class="h-full w-full" :data="chartDataForTodayPointEvents" :options="chartOptions" />
+                <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
+            </div>
+        </div>
         <div class="grid h-full grid-cols-2 p-4 gap-4">
             <HomeTodaysPointCard />
             <HomeOptionsCard />
