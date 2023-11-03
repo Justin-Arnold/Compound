@@ -108,12 +108,7 @@ const chartOptions = computed(() => {
     }
 })
 
-function deletePoint(pointId: string) {
-    supabase.from('point_config').delete().eq('id', pointId)
-    .then(() => {
-        navigateTo('/')
-    })
-}
+
 </script>
 
 <template>

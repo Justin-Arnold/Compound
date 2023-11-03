@@ -8,19 +8,6 @@ definePageMeta({
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
-const { data: allPoints, error } = await supabase
-    .from('view_points_with_latest_event')
-    .select('*')
-
-
-// const todaysPoints = computed(() => {
-//     if (!allPoints) return []
-//     return allPoints.filter((point) => {
-//         return point.frequency === 'daily'
-//     })
-// })
-
-
 
 
 
@@ -65,38 +52,7 @@ async function createPoint() {
     }
 }
 
-async function increaseValue(point) {
-    const pointId = point.id;
 
-    //if it exists, update it and if not creaet it
-    const { data: existingEvent } = await supabase.from('point_event').select().eq('point_id', pointId).eq('recorded_at', toLocalISOString(new Date()));
-
-    if (!!existingEvent && existingEvent.length > 0) {
-        const { data, error } = await supabase.from('point_event').update({
-            value: existingEvent[0].value + 1
-        }).eq('point_id', existingEvent[0].point_id)
-        .eq('recorded_at', existingEvent[0].recorded_at);
-
-        if (error) {
-            console.error('Error incrementing tally:', error);
-        } else {
-            console.log('Tally incremented successfully!', data);
-        }
-        return;
-    } else {
-        const { data, error } = await supabase.from('point_event').insert({
-        point_id: pointId,
-        recorded_at: new Date().toISOString(),
-        value: 1
-    });
-
-    if (error) {
-        console.error('Error incrementing tally:', error);
-    } else {
-        console.log('Tally incremented successfully!', data);
-    }
-    }
-}
 
 function toLocalISOString(date: Date) {
   return date.toISOString().split('T')[0];
@@ -117,31 +73,7 @@ function toLocalISOString(date: Date) {
             <div class="h-[1200px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
         </div>
         <div class="grid h-full grid-cols-3 p-4 gap-4">
-            <div class="bg-slate-700/50 rounded-lg aspect-square p-4 flex flex-col gap-4">
-                <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
-                <div v-if="allPoints?.length! > 0" class="flex flex-col gap-2">
-                    <div v-for="point, index in allPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center justify-between group">
-                        <div>
-                            <p @click="navigateTo(`/${point.name}-${point.id}`)">{{ point.name }}</p>
-                            <p class="text-xs font-semibold text-slate-900">{{ point.type }} - {{ point.frequency }}</p>
-                        </div>
-                        <div v-if="point.type === 'tally'" class="flex items-center">
-                            <p>
-                                {{ point.latest_value || 0 }}
-                            </p>
-                            <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
-                        </div>
-                        <input v-else-if="point.type === 'binary'" type="checkbox">
-                    </div>
-                    <button class=" text-slate-400 mt-8" @click="newPoint()">Create Point</button>
-                </div>
-                <div v-else class="grid h-1/2 place-items-center">
-                    <div class="flex flex-col items-center gap-4">
-                        <p class="text-3xl font-bold text-slate-500">No points today</p>
-                        <button class="rounded p-2 bg-slate-500/50 text-slate-400" @click="newPoint()">Create Point</button>
-                    </div>
-                </div>
-            </div>
+            <HomeTodaysPointCard />
         </div>
         <dialog id="dia" ref="newPointDialog">
             <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
