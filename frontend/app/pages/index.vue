@@ -69,11 +69,10 @@ function toLocalISOString(date: Date) {
             </template>
         </BaseHeader>
         <!-- Hero Section -->
-        <div class="overflow-clip">
-            <div class="h-[1200px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
-        </div>
-        <div class="grid h-full grid-cols-3 p-4 gap-4">
+        <PointChart />
+        <div class="grid h-full grid-cols-2 p-4 gap-4">
             <HomeTodaysPointCard />
+            <HomeOptionsCard />
         </div>
         <dialog id="dia" ref="newPointDialog">
             <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
