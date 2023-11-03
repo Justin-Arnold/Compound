@@ -122,7 +122,7 @@ function toLocalISOString(date: Date) {
                 <div v-if="allPoints?.length! > 0" class="flex flex-col gap-2">
                     <div v-for="point, index in allPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center justify-between group">
                         <div>
-                            <p @click="navigateTo(`/point-${point.id}`)">{{ point.name }}</p>
+                            <p @click="navigateTo(`/${point.name}-${point.id}`)">{{ point.name }}</p>
                             <p class="text-xs font-semibold text-slate-900">{{ point.type }} - {{ point.frequency }}</p>
                         </div>
                         <div v-if="point.type === 'tally'" class="flex items-center">

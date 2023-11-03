@@ -9,6 +9,7 @@ const supabase = useSupabaseClient<Database>()
 const route = useRoute()
 
 const pointId = route.params.pointId as string
+const pointName = route.params.pointName as string
 
 const { data: events, error } = await supabase
     .from('point_event')
@@ -106,6 +107,13 @@ const chartOptions = computed(() => {
         }
     }
 })
+
+function deletePoint(pointId: string) {
+    supabase.from('point_config').delete().eq('id', pointId)
+    .then(() => {
+        navigateTo('/')
+    })
+}
 </script>
 
 <template>
@@ -120,17 +128,19 @@ const chartOptions = computed(() => {
         <!-- Hero Section -->
         <div class="overflow-clip relative">
             <div class="h-[1200px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
-            <div class="absolute h-full w-full top-0 left-0 z-2 ">
-                <PrimeChart type="line" class="h-full w-full" :data="chartData" :options="chartOptions" />
+            <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
+                <PrimeChart v-if="events?.length" type="line" class="h-full w-full" :data="chartData" :options="chartOptions" />
+                <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
             </div>
         </div>
-        <div class="grid h-full grid-cols-3 p-4 gap-4">
-            Hello
-            <hr/>
-
-            <input type="checkbox" v-model="shouldBeginAtZero" class="h-4" />
+        <div class="h-full p-4 flex flex-col gap-4">
+            <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                <h1 class="text-lg">{{ (pointName[0].toUpperCase()) + pointName.slice(1) }}</h1>
+                <div>
+                    <Icon name="mdi:trash" size="24px" class="text-red-300 cursor-pointer" @click="deletePoint(pointId)"></Icon>
+                </div>
+            </div>
+           <div>Start At Zero:<input type="checkbox" v-model="shouldBeginAtZero" class="h-4" /></div>
         </div>
-        {{  chartOptions.scales.y }}
-
     </div>
 </template>
