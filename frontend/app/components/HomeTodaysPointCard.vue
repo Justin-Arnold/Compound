@@ -4,6 +4,14 @@ const points = usePoints();
 
 const { data: todaysPoints, refresh, error } = await useAsyncData(points.getTodaysPoints)
 
+function formatDateToMMDD(dateTimeStr: string) {
+    const date = new Date(dateTimeStr);
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // months are 0-based in JS
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${month}-${day}`;
+}
+
 </script>
 
 <template>
@@ -18,7 +26,7 @@ const { data: todaysPoints, refresh, error } = await useAsyncData(points.getToda
                     </div>
                     <div v-if="point.type === 'tally'" class="flex items-center">
                         <p>
-                            {{ point.latest_value || 0 }}
+                            {{ point.todays_value  }}
                         </p>
                         <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
                     </div>

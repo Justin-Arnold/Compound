@@ -84,6 +84,7 @@ export interface Database {
           latest_recorded_at: string | null
           latest_value: number | null
           name: string | null
+          todays_value: number | null
           type: string | null
           user_id: string | null
         }
