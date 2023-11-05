@@ -114,7 +114,7 @@ const chartOptions = computed(() => {
 <template>
     <div class="h-full flex-col text-white grow px-4">
         <div class="flex justify-between items-center rounded bg-[var(--surface-card)] p-2">
-            <h1 class="text-lg">{{ (pointName[0].toUpperCase()) + pointName.slice(1) }}</h1>
+            <BaseBreadcrumb :home="{ icon: 'pi pi-home', to: '/'}" :items="[{ label: (pointName[0].toUpperCase()) + pointName.slice(1)}]" />
             <div>
                 <Icon name="mdi:trash" size="24px" class="text-red-300 cursor-pointer" @click="deletePoint(pointId)"></Icon>
             </div>

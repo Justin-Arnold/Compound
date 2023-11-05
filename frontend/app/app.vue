@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import 'primeicons/primeicons.css'
+</script>
+
 <template>
     <div class="h-screen overflow-hidden flex bg-[var(--surface-ground)] text-white">
             <AppSidebar>
