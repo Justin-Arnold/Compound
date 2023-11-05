@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import type { Database } from 'database';
+
+type View_Row = Database["public"]["Views"]["view_points_with_latest_event"]["Row"]
 
 const points = usePoints();
+
 
 const { data: todaysPoints, refresh, error } = await useAsyncData(points.getTodaysPoints)
 
@@ -10,6 +14,23 @@ function formatDateToMMDD(dateTimeStr: string) {
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${month}-${day}`;
+}
+
+
+async function increaseValue(point: View_Row) {
+    if (point.todays_value === 0) {
+        points.newEventForPoint({
+            point_id: point.id || '',
+            value: 1,
+            recorded_at: new Date().toISOString()
+        });
+    } else {
+        points.updateEventForPoint({
+            point_id: point.id || '',
+            value: point.todays_value || 0 + 1,
+            recorded_at: new Date().toISOString()
+        });
+    }
 }
 
 </script>
