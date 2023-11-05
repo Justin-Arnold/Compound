@@ -16,8 +16,16 @@ import 'primeicons/primeicons.css'
 </template>
 
 <style>
-    ::backdrop {
-        background-color: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(4px);
-    }
+
+::backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+}
+
 </style>

@@ -13,7 +13,7 @@ const pointName = route.params.pointName as string
 
 const { data: events, error } = await supabase
     .from('point_event')
-    .select()
+    .select('*')
     .eq('point_id', pointId)
     .order('recorded_at', { ascending: true })
 
@@ -127,7 +127,19 @@ const chartOptions = computed(() => {
             </div>
         </div>
         <div class="grid h-full grid-cols-2 p-4 gap-4">
-            <BaseCard></BaseCard>
+            <BaseCard class="flex flex-col gap-4">
+                <template #title>
+                    <h2>Events</h2>
+                </template>
+                <div class="flex flex-col gap-2">
+                    <div v-for="event, index in events" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center gap-4">
+                        <div>
+                           {{ event.recorded_at }}
+                        </div>
+                        <p class="text-slate-800">{{ event.value }}</p>
+                    </div>
+                </div>
+            </BaseCard>
             <PointOptionsCard />
         </div>
         <!-- <div class="h-full p-4 flex flex-col gap-4">
