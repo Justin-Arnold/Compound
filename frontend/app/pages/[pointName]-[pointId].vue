@@ -127,9 +127,7 @@ const chartOptions = computed(() => {
             </div>
         </div>
         <div class="grid h-full grid-cols-2 p-4 gap-4">
-            <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
-
-            </div>
+            <BaseCard></BaseCard>
             <PointOptionsCard />
         </div>
         <!-- <div class="h-full p-4 flex flex-col gap-4">
