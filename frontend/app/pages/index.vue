@@ -159,6 +159,9 @@ function toLocalISOString(date: Date) {
 
 <template>
     <NuxtLayout name="chart-layout">
+        <template #toolbar>
+            <BaseBreadcrumb :home="{icon: 'pi pi-home', to: '/'}"></BaseBreadcrumb>
+        </template>
         <template #chart>
             <PrimeChart v-if="chartDataForTodayPointEvents?.labels.length" type="line" class="h-full w-full" :data="chartDataForTodayPointEvents" :options="chartOptions" />
             <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>

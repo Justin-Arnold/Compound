@@ -6,7 +6,7 @@ defineProps<{
         label?: string;
         to?: string;
     };
-    items: {
+    items?: {
         icon?: string;
         label?: string;
         to?: string;

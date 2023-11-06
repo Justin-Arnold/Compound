@@ -37,19 +37,22 @@ async function increaseValue(point: View_Row) {
 
 <template>
     <BaseCard>
+        <template #title>
+            <h2>Todays Points</h2>
+        </template>
         <div class="flex flex-col gap-4">
-            <h2 class="text-2xl font-semibold text-purple-100">Todays Points</h2>
             <div v-if="todaysPoints?.length! > 0" class="flex flex-col gap-2">
                 <div v-for="point, index in todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center justify-between group">
                     <div>
                         <p @click="navigateTo(`/${point.name}-${point.id}`)">{{ point.name }}</p>
                         <p class="text-xs font-semibold text-slate-900">{{ point.type }} - {{ point.frequency }}</p>
                     </div>
-                    <div v-if="point.type === 'tally'" class="flex items-center">
+                    <div v-if="point.type === 'tally'" class="flex items-center gap-2">
                         <p>
                             {{ point.todays_value  }}
                         </p>
-                        <Icon name="ic:round-plus" @click="increaseValue(point)"></Icon>
+
+                        <Icon name="ic:round-plus" @click="increaseValue(point)" class="bg-slate-100 rounded text-slate-800 hover:cursor-pointer hover:scale-110 active:scale-90 transition-all duration-200"></Icon>
                     </div>
                     <input v-else-if="point.type === 'binary'" type="checkbox">
                 </div>
