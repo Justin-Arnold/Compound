@@ -112,21 +112,23 @@ const chartOptions = computed(() => {
 </script>
 
 <template>
-    <div class="h-full flex-col text-white grow px-4">
+    <div class="h-full flex flex-col gap-4 text-white grow p-4">
         <div class="flex justify-between items-center rounded bg-[var(--surface-card)] p-2">
             <BaseBreadcrumb :home="{ icon: 'pi pi-home', to: '/'}" :items="[{ label: (pointName[0].toUpperCase()) + pointName.slice(1)}]" />
             <div>
                 <Icon name="mdi:trash" size="24px" class="text-red-300 cursor-pointer" @click="deletePoint(pointId)"></Icon>
             </div>
         </div>
-        <div class="overflow-hidden relative">
-            <div class="h-[400px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
-            <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
-                <PrimeChart v-if="events?.length" type="line" class="h-full w-full" :data="chartData" :options="chartOptions" />
-                <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
+        <div class="">
+            <div class="overflow-clip relative rounded ">
+                <div class="h-[400px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
+                <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
+                    <PrimeChart v-if="events?.length" type="line" class="h-full w-full" :data="chartData" :options="chartOptions" />
+                    <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
+                </div>
             </div>
         </div>
-        <div class="grid h-full grid-cols-2 p-4 gap-4">
+        <div class="grid h-full grid-cols-2 gap-4">
             <BaseCard class="flex flex-col gap-4">
                 <template #title>
                     <h2>Events</h2>
@@ -134,7 +136,7 @@ const chartOptions = computed(() => {
                 <div class="flex flex-col gap-2">
                     <div v-for="event, index in events" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center gap-4">
                         <div>
-                           {{ event.recorded_at }}
+                            {{ event.recorded_at }}
                         </div>
                         <p class="text-slate-800">{{ event.value }}</p>
                     </div>
@@ -142,9 +144,5 @@ const chartOptions = computed(() => {
             </BaseCard>
             <PointOptionsCard />
         </div>
-        <!-- <div class="h-full p-4 flex flex-col gap-4">
-
-            <div>Start At Zero:<input type="checkbox" v-model="shouldBeginAtZero" class="h-4" /></div>
-        </div> -->
     </div>
 </template>

@@ -3,7 +3,7 @@ import 'primeicons/primeicons.css'
 </script>
 
 <template>
-    <div class="h-screen overflow-hidden flex bg-[var(--surface-ground)] text-white">
+    <div class="h-screen overflow-hidden flex gap-4 bg-[var(--surface-ground)] text-white">
             <AppSidebar>
                 <template #right>
                     <div class="flex gap-2">
