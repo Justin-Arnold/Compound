@@ -158,48 +158,45 @@ function toLocalISOString(date: Date) {
 </script>
 
 <template>
-    <div class="h-full flex-col text-white grow">
-        <!-- Hero Section -->
-        <div class="overflow-hidden relative">
-            <div class="h-[400px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
-            <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
-                <PrimeChart v-if="chartDataForTodayPointEvents?.labels.length" type="line" class="h-full w-full" :data="chartDataForTodayPointEvents" :options="chartOptions" />
-                <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
-            </div>
-        </div>
-        <div class="grid h-full grid-cols-2 p-4 gap-4">
+    <NuxtLayout name="chart-layout">
+        <template #chart>
+            <PrimeChart v-if="chartDataForTodayPointEvents?.labels.length" type="line" class="h-full w-full" :data="chartDataForTodayPointEvents" :options="chartOptions" />
+            <p v-else class="text-2xl text-semibold text-white/50">No existing data for this point</p>
+        </template>
+        <template #cards>
             <HomeTodaysPointCard />
             <HomeOptionsCard />
-        </div>
-        <dialog id="dia" ref="newPointDialog">
-            <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
-                <h2 class="text-2xl font-semibold text-purple-100">New Point</h2>
-                <div class="flex flex-col gap-2">
-                    <label class="text-slate-100">Name</label>
-                    <input class="rounded p-2 bg-slate-700 text-slate-100" type="text" placeholder="Name" v-model="name"/>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-slate-100">Type</label>
-                    <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="type">
-                        <option value="binary">Binary</option>
-                        <option value="tally">Tally</option>
-                        <option value="numeric">Number</option>
-                    </select>
-                </div>
-                <div class="flex flex-col gap-2">
-                    <label class="text-slate-100">Frequency</label>
-                    <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="frequency">
-                        <option value="daily">Per Day</option>
-                        <option value="weekly">Per Week</option>
-                        <option value="monthly">Per Month</option>
-                        <option value="yearly">Per Year</option>
-                    </select>
-                </div>
-                <div class="flex gap-2">
-                    <button class="rounded p-2 bg-slate-500/50 text-slate-400" @click="createPoint">Create</button>
-                    <button class="rounded p-2 bg-slate-500/50 text-slate-400" @click="newPointDialog?.close()">Cancel</button>
-                </div>
+        </template>
+    </NuxtLayout>
+
+    <dialog id="dia" ref="newPointDialog">
+        <div class="bg-slate-800 rounded-lg p-4 flex flex-col gap-4 w-[400px]">
+            <h2 class="text-2xl font-semibold text-purple-100">New Point</h2>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-100">Name</label>
+                <input class="rounded p-2 bg-slate-700 text-slate-100" type="text" placeholder="Name" v-model="name"/>
             </div>
-        </dialog>
-    </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-100">Type</label>
+                <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="type">
+                    <option value="binary">Binary</option>
+                    <option value="tally">Tally</option>
+                    <option value="numeric">Number</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-100">Frequency</label>
+                <select class="rounded p-2 bg-slate-700 text-slate-100" v-model="frequency">
+                    <option value="daily">Per Day</option>
+                    <option value="weekly">Per Week</option>
+                    <option value="monthly">Per Month</option>
+                    <option value="yearly">Per Year</option>
+                </select>
+            </div>
+            <div class="flex gap-2">
+                <button class="rounded p-2 bg-slate-500/50 text-slate-400" @click="createPoint">Create</button>
+                <button class="rounded p-2 bg-slate-500/50 text-slate-400" @click="newPointDialog?.close()">Cancel</button>
+            </div>
+        </div>
+    </dialog>
 </template>
