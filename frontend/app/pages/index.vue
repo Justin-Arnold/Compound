@@ -70,7 +70,7 @@ const { data: chartDataForTodayPointEvents, refresh: refreshChartData, error: ch
             chartData.datasets.push({
                 label: point.name || 'error',
                 data: [],
-                fill: true,
+                fill: false,
                 borderColor: hexColor,
                 tension: 0.4,
                 backgroundColor: `${hexColor}50`

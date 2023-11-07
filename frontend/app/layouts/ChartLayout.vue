@@ -5,7 +5,7 @@
         </div>
         <div class="">
             <div class="overflow-clip relative rounded ">
-                <div class="h-[400px] bg-gradient-to-br from-indigo-950 to-indigo-200 blur-xl w-full"></div>
+                <div class="h-[400px] bg-primary w-full"></div>
                 <div class="absolute h-full w-full top-0 left-0 z-2 grid place-items-center">
                     <slot name="chart"></slot>>
                 </div>
