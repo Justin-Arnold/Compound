@@ -69,10 +69,10 @@ async function createPoint() {
         </template>
         <div class="flex flex-col gap-4">
             <div v-if="todaysPoints?.length! > 0" class="flex flex-col gap-2">
-                <div v-for="point, index in todaysPoints" :key="index" class="bg-slate-600 text-slate-100 rounded p-2 flex items-center justify-between group">
+                <div v-for="point, index in todaysPoints" :key="index" class="bg-[var(--surface-section)] text-[var(--text-color)] rounded p-2 flex items-center justify-between group font-semibold">
                     <div>
                         <p @click="navigateTo(`/${point.name}-${point.id}`)">{{ point.name }}</p>
-                        <p class="text-xs font-semibold text-slate-900">{{ point.type }} - {{ point.frequency }}</p>
+                        <p class="text-xs font-light text-[var(--text-secondary-color)]">{{ point.type }} - {{ point.frequency }}</p>
                     </div>
                     <div v-if="point.type === 'tally'" class="flex items-center gap-2">
                         <p>
