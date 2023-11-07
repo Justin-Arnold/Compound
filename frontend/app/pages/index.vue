@@ -6,35 +6,6 @@ definePageMeta({
 })
 
 const supabase = useSupabaseClient<Database>()
-const user = useSupabaseUser()
-
-
-
-
-function signOut() {
-    supabase.auth.signOut()
-    .then(() => {
-        navigateTo('/')
-    })
-}
-
-
-
-
-async function createPoint() {
-    const { data, error } = await supabase.from('point_config').insert({
-        name: name.value,
-        type: type.value,
-        frequency: frequency.value,
-        user_id: user.value?.id || ''
-    })
-    if (error) console.log('e', error)
-    else {
-        console.log('d', data)
-        newPointDialog.value?.close()
-        state.todaysPoints.push(data)
-    }
-}
 
 const chartOptions = computed(() => {
     return {
@@ -77,8 +48,6 @@ type ChartDataset = {
     tension: number;
     backgroundColor: string;
 };
-
-
 
 
 const points = usePoints();
@@ -136,9 +105,6 @@ function formatDateToMMDD(dateTimeStr: string) {
     return `${month}-${day}`;
 }
 
-function toLocalISOString(date: Date) {
-  return date.toISOString().split('T')[0];
-}
 </script>
 
 <template>
