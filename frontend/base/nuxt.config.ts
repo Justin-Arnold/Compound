@@ -1,6 +1,5 @@
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import Tailwind from 'primevue/passthrough/tailwind';
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -19,11 +18,52 @@ export default defineNuxtConfig({
         usePrimeVue: true,
         components: {
             prefix: 'Prime',
-            include: ['Button', 'DataTable', 'Chart', 'Card', 'Breadcrumb']
+            include: [
+                'Button',
+                'DataTable',
+                'Chart',
+                'Card',
+                'Breadcrumb',
+                'InputText'
+            ]
         },
     },
     tailwindcss: {
         cssPath: join(currentDir, './assets/css/tailwind.css'),
+        config: {
+            plugins: [require("daisyui")],
+            daisyui: {
+                themes: ["light",
+                "dark",
+                "cupcake",
+                "bumblebee",
+                "emerald",
+                "corporate",
+                "synthwave",
+                "retro",
+                "cyberpunk",
+                "valentine",
+                "halloween",
+                "garden",
+                "forest",
+                "aqua",
+                "lofi",
+                "pastel",
+                "fantasy",
+                "wireframe",
+                "black",
+                "luxury",
+                "dracula",
+                "cmyk",
+                "autumn",
+                "business",
+                "acid",
+                "lemonade",
+                "night",
+                "coffee",
+                "winter",]
+            }
+        },
     },
     app: {
         head: {

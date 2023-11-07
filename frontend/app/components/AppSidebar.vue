@@ -18,12 +18,11 @@ function signOutCurrentUser() {
             [CmPd]
         </NuxtLink>
         <div class="text-white">
-            <prime-button
+            <BaseButton
                 @click="signOutCurrentUser()"
-                size="small"
-            >
-                Sign Out
-            </prime-button>
+                label=" Sign Out"
+                class="btn-sm"
+            />
         </div>
     </div>
 </template>
