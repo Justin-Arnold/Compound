@@ -14,7 +14,7 @@ async function signIn(event: any) {
 </script>
 
 <template>
-    <div class="h-screen w-full bg-slate-800 text-white flex flex-col items-center">
+    <div class="h-screen w-full bg-[var(--surface-ground)] text-white flex flex-col items-center">
         <BaseHeader class="w-full"></BaseHeader>
         <div class="h-40 p-4 flex flex-col gap-4 max-w-[400px] pt-20">
             <div class="text-2xl">You need to login buster</div>

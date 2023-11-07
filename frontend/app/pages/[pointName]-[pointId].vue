@@ -112,6 +112,7 @@ const chartOptions = computed(() => {
 </script>
 
 <template>
+    <AppSidebar />
     <div class="h-full flex flex-col gap-4 text-white grow p-4">
         <div class="flex justify-between items-center rounded bg-[var(--surface-card)] p-2">
             <BaseBreadcrumb :home="{ icon: 'pi pi-home', to: '/'}" :items="[{ label: (pointName[0].toUpperCase()) + pointName.slice(1)}]" />

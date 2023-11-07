@@ -108,6 +108,7 @@ function formatDateToMMDD(dateTimeStr: string) {
 </script>
 
 <template>
+    <AppSidebar />
     <NuxtLayout name="chart-layout">
         <template #toolbar>
             <BaseBreadcrumb :home="{icon: 'pi pi-home', to: '/'}"></BaseBreadcrumb>
