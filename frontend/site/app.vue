@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen bg-slate-800 text-white relative">
+    <div class="h-screen bg-slate-800 text-white relative" data-theme="night">
         <img
             src="/background.webp"
             class="h-full w-full object-cover absolute top-0 left-0 blur-sm"
@@ -8,7 +8,7 @@
             <BaseHeader>
                 <template #right>
                     <NuxtLink :to="useRuntimeConfig().public.appUrl">
-                        <prime-button>Go To App</prime-button>
+                        <BaseButton label="Go To App"/>
                     </NuxtLink>
                 </template>
             </BaseHeader>
